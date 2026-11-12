@@ -42,6 +42,30 @@ To get updates, run:
 /plugin marketplace update team-skills
 ```
 
+## Using with Codex
+
+The skills use the open Agent Skills format, so Codex can run them too. The `/plugin` install above is Claude Code only; in Codex, copy the skill folders instead.
+
+1. Clone the repo:
+
+   ```bash
+   git clone git@github.com:violetta-soloveva/claude-custom-skills.git
+   ```
+
+2. Copy the skill folders you want (each folder with its `SKILL.md`) into one of:
+   - `~/.agents/skills/<skill-name>/` for all projects (Windows: `C:\Users\<name>\.agents\skills\<skill-name>\`)
+   - `<repo>/.agents/skills/<skill-name>/` for one repo only
+
+   For example, on macOS or Linux:
+
+   ```bash
+   mkdir -p ~/.agents/skills && cp -r claude-custom-skills/commit-message ~/.agents/skills/
+   ```
+
+3. Restart Codex.
+
+Copied skills don't update on their own: pull the repo and copy them again to get changes. Skip the `bundle/` and `.claude-plugin/` folders; they are for Claude Code only.
+
 ## Changing the skills
 
 - Add a skill: add its folder, add an entry for it to `plugins` in `.claude-plugin/marketplace.json` (`"source": "./<skill-name>"`), and add its name to `dependencies` in `bundle/.claude-plugin/plugin.json`. Bump the bundle's `version` in both files.
