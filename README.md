@@ -1,6 +1,6 @@
 # Team Claude skills
 
-Claude Code skills for frontend work, shared as one plugin, `team-skills`. Each skill is a folder with a `SKILL.md` inside.
+Claude Code skills for frontend work. Each skill is a folder with a `SKILL.md` inside and is its own plugin; the `team-skills` plugin installs all of them at once.
 
 ## Skills
 
@@ -14,14 +14,27 @@ Claude Code skills for frontend work, shared as one plugin, `team-skills`. Each 
 
 ## Install (Claude Code, all repos)
 
-Run once in Claude Code:
+Add the marketplace once in Claude Code:
 
 ```bash
 /plugin marketplace add violetta-soloveva/claude-custom-skills
+```
+
+Then install everything:
+
+```bash
 /plugin install team-skills@team-skills
 ```
 
-The plugin installs at user level, so the skills work in every repo. They show up as `/team-skills:<name>`. New skills appear after starting a new session.
+Or only the skills you want, one at a time:
+
+```bash
+/plugin install commit-message@team-skills
+```
+
+Each skill is installed once either way, so installing a single skill and later the whole set doesn't duplicate anything. Plugins install at user level, so the skills work in every repo. They show up as `/<skill>:<skill>`, for example `/commit-message:commit-message`. New skills appear after starting a new session. You can also run `/plugin` and pick from the list.
+
+The `team-skills` bundle needs a recent Claude Code; run `claude update` if the install fails.
 
 To get updates, run:
 
@@ -31,15 +44,18 @@ To get updates, run:
 
 ## Changing the skills
 
-- Add or remove a skill: add or delete its folder, then edit the `skills` list in `.claude-plugin/marketplace.json`. Only listed skills are part of the plugin.
-- Bump `version` in `marketplace.json` whenever a skill changes, or installed copies won't update.
-- Check the manifest with `claude plugin validate .` before pushing.
+- Add a skill: add its folder, add an entry for it to `plugins` in `.claude-plugin/marketplace.json` (`"source": "./<skill-name>"`), and add its name to `dependencies` in `bundle/.claude-plugin/plugin.json`. Bump the bundle's `version` in both files.
+- Remove a skill: do the reverse.
+- Change a skill: bump that skill's `version` in `marketplace.json`, or installed copies won't update.
+- Check with `claude plugin validate .` and `claude plugin validate ./bundle` before pushing.
 
 ## Layout
 
 ```
 <skill-name>/
   SKILL.md          # frontmatter: name (matches folder) + description
+bundle/
+  .claude-plugin/plugin.json  # team-skills: depends on every skill, installs them all
 .claude-plugin/
-  marketplace.json  # publishes the listed skills as the team-skills plugin
+  marketplace.json  # lists each skill as a plugin, plus the team-skills bundle
 ```

@@ -1,0 +1,13 @@
+{
+  "name": "team-skills",
+  "version": "0.2.0",
+  "description": "All team skills in one install: commit messages, PR descriptions, frontend unit tests, npm vulnerability fixes.",
+  "author": { "name": "Violetta Soloveva" },
+  "dependencies": [
+    "add-unit-test-frontend",
+    "commit-message",
+    "fix-unit-test-frontend",
+    "pr-description",
+    "resolve-vulnerabilities"
+  ]
+}

@@ -1,20 +1,47 @@
 {
   "name": "team-skills",
-  "owner": { "name": "Violetta Soloveva" },
-  "metadata": { "description": "Custom Claude Code skills for frontend work: commits, PRs, tests, vulnerabilities." },
+  "owner": {
+    "name": "Violetta Soloveva"
+  },
+  "metadata": {
+    "description": "Custom Claude Code skills for frontend work: commits, PRs, tests, vulnerabilities."
+  },
   "plugins": [
     {
       "name": "team-skills",
-      "source": "./",
-      "description": "Commit messages, PR descriptions, frontend unit tests, npm vulnerability fixes.",
-      "version": "0.1.0",
-      "skills": [
-        "./add-unit-test-frontend",
-        "./commit-message",
-        "./fix-unit-test-frontend",
-        "./pr-description",
-        "./resolve-vulnerabilities"
-      ]
+      "source": "./bundle",
+      "description": "All team skills in one install: commit messages, PR descriptions, frontend unit tests, npm vulnerability fixes.",
+      "version": "0.2.0"
+    },
+    {
+      "name": "add-unit-test-frontend",
+      "source": "./add-unit-test-frontend",
+      "description": "Add or review unit tests (Testing Library on Vitest or Jest) in React frontend projects.",
+      "version": "0.1.0"
+    },
+    {
+      "name": "commit-message",
+      "source": "./commit-message",
+      "description": "Suggest commit message variants tagged with the task number from the branch.",
+      "version": "0.1.0"
+    },
+    {
+      "name": "fix-unit-test-frontend",
+      "source": "./fix-unit-test-frontend",
+      "description": "Fix failing frontend unit tests after deciding whether the test or the code is wrong.",
+      "version": "0.1.0"
+    },
+    {
+      "name": "pr-description",
+      "source": "./pr-description",
+      "description": "Fill in the repo's PR template for the current branch.",
+      "version": "0.1.0"
+    },
+    {
+      "name": "resolve-vulnerabilities",
+      "source": "./resolve-vulnerabilities",
+      "description": "Resolve High and Critical npm dependency vulnerabilities from osv-scanner or npm audit.",
+      "version": "0.1.0"
     }
   ]
 }
