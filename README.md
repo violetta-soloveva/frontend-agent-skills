@@ -1,6 +1,6 @@
-# Team Claude skills
+# Frontend agent skills
 
-Claude Code skills for frontend work. Each skill is a folder with a `SKILL.md` inside and is its own plugin; the `team-skills` plugin installs all of them at once.
+Agent skills for frontend work, for Claude Code and Codex. Each skill is a folder with a `SKILL.md` inside and is its own plugin; the `team-skills` plugin installs all of them at once.
 
 ## Skills
 
@@ -17,7 +17,7 @@ Claude Code skills for frontend work. Each skill is a folder with a `SKILL.md` i
 Add the marketplace once in Claude Code:
 
 ```bash
-/plugin marketplace add violetta-soloveva/claude-custom-skills
+/plugin marketplace add violetta-soloveva/frontend-agent-skills
 ```
 
 Then install everything:
@@ -49,7 +49,7 @@ The skills use the open Agent Skills format, so Codex can run them too. The `/pl
 1. Clone the repo:
 
    ```bash
-   git clone git@github.com:violetta-soloveva/claude-custom-skills.git
+   git clone https://github.com/violetta-soloveva/frontend-agent-skills.git
    ```
 
 2. Copy the skill folders you want (each folder with its `SKILL.md`) into one of:
@@ -59,7 +59,7 @@ The skills use the open Agent Skills format, so Codex can run them too. The `/pl
    For example, on macOS or Linux:
 
    ```bash
-   mkdir -p ~/.agents/skills && cp -r claude-custom-skills/commit-message ~/.agents/skills/
+   mkdir -p ~/.agents/skills && cp -r frontend-agent-skills/commit-message ~/.agents/skills/
    ```
 
 3. Restart Codex.
