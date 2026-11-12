@@ -1,0 +1,4 @@
+schema_version: "1.1"
+name: bulk-validation-errors-logic
+expected_outcome: |
+  A new bulkValidationErrors.test.ts next to the source with no project mocks, covering the happy path and malformed API payloads (null, non-object, missing errors, non-array errors, items without error), using it.each for input-only variants, all passing.

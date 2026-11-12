@@ -1,0 +1,4 @@
+schema_version: "1.1"
+name: selected-kol-testability
+expected_outcome: |
+  Notices the component needs many mocks to render, proposes a split (pure function or container/presentational) and asks before refactoring; any tests written avoid mocking pure helpers and asserting on child props.

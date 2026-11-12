@@ -1,0 +1,4 @@
+schema_version: "1.1"
+name: review-duplicated-setup
+expected_outcome: |
+  A review that includes a "Shared setup to move" section listing the local factories repeated across the Charts utils test files (file:line), says where a shared version should live in src/tests, and does not edit the test files.

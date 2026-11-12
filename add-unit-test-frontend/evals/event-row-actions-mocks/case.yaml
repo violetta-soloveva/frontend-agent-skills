@@ -1,0 +1,4 @@
+schema_version: "1.1"
+name: event-row-actions-mocks
+expected_outcome: |
+  Identifies the mocks as a design problem, moves the row action decisions into a pure function tested without mocks, and removes assertions on props passed to a mocked EventStatusMenu; asks before refactoring the component or explains the change.
