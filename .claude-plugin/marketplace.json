@@ -17,7 +17,7 @@
       "name": "add-unit-test-frontend",
       "source": "./add-unit-test-frontend",
       "description": "Add or review unit tests (Testing Library on Vitest or Jest) in React frontend projects.",
-      "version": "0.1.0"
+      "version": "0.2.0"
     },
     {
       "name": "commit-message",

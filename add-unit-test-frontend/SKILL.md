@@ -7,7 +7,7 @@ description: Add or review unit tests (logic and component tests with Testing Li
 
 Frontend "unit tests" here are two kinds:
 
-- **Logic tests**: pure functions and hooks (data transformation, dates, validators, mappers).
+- **Logic tests**: pure functions and hooks (data transformation, dates, validators, mappers that hold logic).
 - **Component tests**: one component or form rendered and used the way a user would (typing, clicking, selecting), with the API mocked.
 
 Multi-page flows, real backend contracts and real-browser behavior (layout, scrolling, downloads) are out of scope: they belong to e2e tests or manual QA. If a request needs one of those, say so instead of forcing it into a unit test.
@@ -33,6 +33,7 @@ How the skill was invoked decides whether you write tests right away or propose 
    - **Covered already**: an existing test exercises the changed behavior. Say which test.
    - **Not worth testing**: name the reason (trivial render, styling, library behavior, pass-through).
    - **Needs a split first**: the testability check (step 3) fails. Name the pure function or split you'd propose.
+   - **Untested elsewhere in touched files** (optional, outside the change): functions or schemas in the same files that step 2 rates worth testing and no test covers yet, such as an existing form schema next to the mapper you changed. Mark the group as outside the PR's scope so the user can add them now or leave them for later. Skip this group when you started the skill yourself.
 4. Reply with that list, grouped by category, plus any "Shared setup to move" or "Mocks that could be global" findings you noticed while reading. End by asking which ones to write. Write nothing until the user answers.
 
 Keep the proposal short: one line per behavior, not a test plan. If nothing in the changes is worth testing, say so plainly.
@@ -62,6 +63,7 @@ If the project has no tests yet, say so, propose a minimal shared setup (custom 
 The shared test folder usually exists because helpers kept being copied between test files. Don't let them drift back.
 
 - Before writing any helper in a test file (a `createX`/`makeX` factory, a render wrapper, a query client, a storage or browser API stub, a network handler, form test values), check whether the shared test folder already has it. If it does, use it. If it almost does, extend it there (for example, add an override or a new factory next to the existing one).
+- A builder for a shape the whole app uses (a model, an API error or DTO shape, a custom field) goes into the shared test folder the first time you need it, even when only this test uses it so far. Keep a helper local only when it's tied to the code under test (for example `getErrorMessages(values, field)` around one form schema).
 - Don't repeat what the global setup and global mocks already do (clearing mocks, resetting storage, mocking ids, starting the network mock server).
 - If the new test needs a helper that another test file already defines locally, don't copy it. Put a shared version in the shared test folder and use that in the new test.
 - Leave other test files alone (unrelated edits mix the task with changes nobody asked for). If you notice they define their own copy of something that exists in the shared folder, or that the same local helper or the same `vi.mock` setup appears in several files, report it (see step 8). Don't fix it.
@@ -82,6 +84,7 @@ Skip:
 - UI library behavior (MUI, Chakra, Ant, etc.) and other third-party code
 - pure styling and layout (unless the style depends on data, then mock the data)
 - trivial render-only components and pass-through utils
+- API mappers that only rename fields between DTO and model (`first_name` ↔ `firstName`), and validation-error mappers that only pair a DTO key with a model field. Test a mapper only when it holds logic (conditions, defaults, filtering), preferably through the form or feature that uses it
 - implementation details (internal state, hook call counts, which props a child received)
 
 If the user asks for tests on something in the skip list, say why it's low value and suggest what to test instead. Don't silently refuse.
@@ -176,12 +179,15 @@ If the test you're writing needs a `vi.mock` that other test files also set up t
 - Render with the project's custom render; interact with `userEvent` (`const user = userEvent.setup()`, or the project's helper that returns `user`).
 - Queries: `getByRole` → `getByLabelText` → `getByText` → `getByTestId` (last resort). `findBy*` for anything that appears async.
 - Test data from the shared factories with overrides, not inline objects cast with `as unknown as`.
-- Naming: use the project's template if it has one. Otherwise `should <verb> <observable outcome> when <trigger> [and <precondition>]`, in user language ("shows", "saves", "disables"), not implementation ("sets state", "calls hook").
+- Naming: use the project's template if it has one. Otherwise `should <verb> <observable outcome> when <trigger> [and <precondition>]`, not implementation ("sets state", "calls hook"). Match the words to the level under test:
+  - component and page tests use user language ("shows", "saves", "disables", "when Save is clicked");
+  - pure function and hook tests name the input and the result ("should map an empty email to null", "should skip rows with no specialty selected"), because nothing is shown, clicked or saved there.
 - `describe` per component or function, nested `describe` for context (`when row is in edit mode`), one behavior per `it`.
 - Imports: follow what existing test files do (explicit `import { describe, it, expect, vi } from 'vitest'` or globals).
 - **Form validation**: use the project's form test values and error helpers if it has them (for example a `getHelpText(fieldName)` helper and an error class constant), and add new values next to the existing ones instead of inline strings. Cover both sides: the error shows for invalid input and clears for valid input.
 - **Accessibility gaps**: if an element can only be found with `getByTestId` (for example an icon button with no `aria-label`), use the test id for now and report the missing accessible name. Don't edit the component to add it unless asked.
 - **New shared helpers** follow the project's documentation rules (for example JSDoc on every export).
+- **Local helpers** in a test file (non-exported `const` functions such as `renderText` or `getFoundPhones`) get no JSDoc, because a documentation rule for exports doesn't cover them. Give them a name that says what they do instead.
 - **Domain naming**: if the project's UI text uses different words than the code (code says `event`, UI says "meeting"), queries match the UI text.
 - Follow the project's lint rules.
 
@@ -196,6 +202,7 @@ Each of these looks plausible and proves nothing or breaks on refactors:
 - Tests that depend on order or on state left by a previous test.
 - Re-testing the same branch at the component level that a pure function test already covers.
 - Tests named "works correctly" or "renders" with no outcome.
+- Pure function tests named after user actions that never happen in them ("should save the KOL when the form is submitted" for a mapper).
 - A local factory, wrapper or stub that duplicates one in the shared test folder, or the same helper copied between test files.
 
 ## 8. Before finishing
