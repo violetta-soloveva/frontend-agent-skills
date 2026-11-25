@@ -35,7 +35,7 @@
       "name": "pr-description",
       "source": "./pr-description",
       "description": "Fill in the repo's PR template for the current branch.",
-      "version": "0.1.0"
+      "version": "0.2.0"
     },
     {
       "name": "resolve-vulnerabilities",

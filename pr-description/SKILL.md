@@ -58,6 +58,7 @@ Just `US-<number>`. Drop the example and helper text.
 
 - Small fixes (typo, one-line fix, version bump, obvious change from the title): drop the whole `## Description` section.
 - Otherwise, write 1–5 short bullets on what changed and anything reviewers should know: non-obvious decisions, behavior changes, follow-ups, manual testing notes. Use the domain language of the code. Do not list every file or restate commit messages.
+- Write the bullets in the past tense, as a report of what the PR did: "Added creating and editing KOLs at the client level", "Reused `KolDetailsForm` through a new `isGlobalKol` prop", "Tested create, edit and delete manually against the dev backend". Facts that hold after the merge stay in the present tense ("Global KOLs have no salutation in the API").
 
 ### Tests Status
 
